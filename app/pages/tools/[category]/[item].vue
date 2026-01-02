@@ -1,11 +1,8 @@
 <script setup lang="ts">
 const route = useRoute();
-const { data } = await useAsyncData(
-  () => {
-    return queryCollection("tools").path(route.path).first();
-  },
-  { watch: [route] }
-);
+const { data } = await useAsyncData("tools-item", () => {
+  return queryCollection("tools").path(route.path).first();
+});
 definePageMeta({
   layout: "tools",
 });

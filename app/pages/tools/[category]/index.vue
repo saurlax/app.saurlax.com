@@ -1,22 +1,19 @@
 <script setup lang="ts">
 const route = useRoute();
-const { data } = await useAsyncData(
-  () => {
-    return queryCollection("tools")
-      .where("path", "LIKE", `${route.path}%`)
-      .all()
-      .then((items) => {
-        return items.map((item) => {
-          return {
-            title: item.title,
-            description: item.description,
-            to: item.path,
-          };
-        });
+const { data } = await useAsyncData("tools-items", () => {
+  return queryCollection("tools")
+    .where("path", "LIKE", `${route.path}%`)
+    .all()
+    .then((items) => {
+      return items.map((item) => {
+        return {
+          title: item.title,
+          description: item.description,
+          to: item.path,
+        };
       });
-  },
-  { watch: [route] }
-);
+    });
+});
 definePageMeta({
   layout: "tools",
 });

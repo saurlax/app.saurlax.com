@@ -10,22 +10,23 @@ const items = computed(() => [
   },
 ]);
 
-const { data: subnavItems } = await useAsyncData(
-  () => {
-    return queryCollectionNavigation("tools")
-      .where("path", "LIKE", `/${route.path.split("/")[1]}%`)
-      .then((items) =>
-        items[0]?.children?.map((item) => {
-          return {
-            label: item.title,
-            to: item.path,
-            active: route.path.startsWith(item.path),
-          };
-        })
-      );
-  },
-  { watch: [route] }
-);
+const { data: subnavItems } = await useAsyncData("subnav", () => {
+  return queryCollectionNavigation("tools")
+    .where("path", "LIKE", `/${route.path.split("/")[1]}%`)
+    .then((items) =>
+      items[0]?.children?.map((item) => {
+        return {
+          label: item.title,
+          to: item.path,
+          active: route.path.startsWith(item.path),
+        };
+      })
+    );
+});
+
+watch(route, () => {
+  console.log("Route changed:", route.path);
+});
 </script>
 
 <template>
