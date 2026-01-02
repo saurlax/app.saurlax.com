@@ -19,6 +19,6 @@ useHead({
 @import "@nuxt/ui";
 
 @theme {
-  --font-sans: "Space Mono", sans-serif;
+  --font-sans: "Space Mono", monospace;
 }
 </style>

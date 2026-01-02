@@ -1,8 +1,8 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  compatibilityDate: "2025-07-15",
+  compatibilityDate: "2026-01-01",
   devtools: { enabled: true },
-  modules: ["@nuxt/ui"],
+  modules: ["@nuxt/ui", "@nuxt/content"],
   icon: {
     customCollections: [
       {
@@ -11,4 +11,8 @@ export default defineNuxtConfig({
       },
     ],
   },
+  // waiting for nuxt 4.3 to support appLayout in routeRules
+  // routeRules: {
+  //   "/tools/**": { appLayout: "tools" },
+  // },
 });

@@ -1,20 +1,33 @@
 <script setup lang="ts">
-import type { NavigationMenuItem } from "@nuxt/ui";
-
 const route = useRoute();
-
-const items = computed<NavigationMenuItem[]>(() => [
+const { data: subnavItems } = await useAsyncData(
+  () => {
+    return queryCollectionNavigation("tools")
+      .where("path", "LIKE", `/${route.path.split("/")[1]}%`)
+      .then((items) =>
+        items[0]?.children?.map((item) => {
+          return {
+            label: item.title,
+            to: item.path,
+            active: route.path.startsWith(item.path),
+          };
+        })
+      );
+  },
+  { watch: [route] }
+);
+const items = computed(() => [
   {
-    label: "About",
-    to: "https://saurlax.com/",
+    label: "Tools",
+    to: "/tools/crypto",
   },
 ]);
 </script>
 
 <template>
-  <UHeader>
+  <UHeader class="h-[unset] [&>div:first-child]:h-(--ui-header-height)">
     <template #title>
-      <Logo class="size-8" />
+      <Logo />
     </template>
 
     <UNavigationMenu :items="items" />
@@ -24,7 +37,7 @@ const items = computed<NavigationMenuItem[]>(() => [
       <UButton
         color="neutral"
         variant="ghost"
-        to="https://github.com/saurlax/app.saurlax.com"
+        to="https://github.com/saurlax/nuxt-app"
         target="_blank"
         icon="i-simple-icons-github"
         aria-label="GitHub"
@@ -33,6 +46,13 @@ const items = computed<NavigationMenuItem[]>(() => [
 
     <template #body>
       <UNavigationMenu :items="items" orientation="vertical" />
+    </template>
+
+    <template v-if="route.path !== '/'" #bottom>
+      <USeparator />
+      <UContainer>
+        <UNavigationMenu :items="subnavItems" highlight />
+      </UContainer>
     </template>
   </UHeader>
   <UMain>
@@ -46,3 +66,13 @@ const items = computed<NavigationMenuItem[]>(() => [
     </template>
   </UFooter>
 </template>
+
+<style scoped>
+header {
+  height: none !important;
+}
+
+header > div:first-child {
+  height: var(--ui-header-height) !important;
+}
+</style>

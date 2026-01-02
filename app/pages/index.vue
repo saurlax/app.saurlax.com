@@ -1,9 +1,13 @@
 <template>
   <UContainer>
-    <UPageHeader
-      headline="Playground"
-      title="Welcome to Saurlax's App"
-      description="Discover something interesting here."
-    />
+    <UPageHero
+      title="Saurlax's App"
+      description="Tools collection powered bt Nuxt."
+    >
+      <template #links>
+        <UButton to="/tools/crypto">Get Started</UButton>
+        <UButton variant="outline">Documentation</UButton>
+      </template>
+    </UPageHero>
   </UContainer>
 </template>
