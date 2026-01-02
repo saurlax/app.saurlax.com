@@ -21,7 +21,9 @@ definePageMeta({
 
 <template>
   <UPageHeader :title="route.path" />
-  <UPageGrid>
-    <UPageCard v-for="item in data" :key="item.title" v-bind="item" />
-  </UPageGrid>
+  <UPageBody>
+    <UPageGrid>
+      <UPageCard v-for="item in data" :key="item.title" v-bind="item" />
+    </UPageGrid>
+  </UPageBody>
 </template>

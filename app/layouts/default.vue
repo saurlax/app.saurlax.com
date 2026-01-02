@@ -23,10 +23,6 @@ const { data: subnavItems } = await useAsyncData("subnav", () => {
       })
     );
 });
-
-watch(route, () => {
-  console.log("Route changed:", route.path);
-});
 </script>
 
 <template>
