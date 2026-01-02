@@ -1,10 +1,13 @@
 <script setup lang="ts">
 const route = useRoute();
-const { data } = await useAsyncData(() => {
-  return queryCollectionNavigation("tools")
-    .where("path", "LIKE", `${route.path.split("/").slice(0, 2).join("/")}%`)
-    .then((items) => items[0]?.children?.[0]?.children ?? []);
-});
+const { data } = await useAsyncData(
+  () => {
+    return queryCollectionNavigation("tools")
+      .where("path", "LIKE", `${route.path.split("/").slice(0, 2).join("/")}%`)
+      .then((items) => items[0]?.children?.[0]?.children ?? []);
+  },
+  { watch: [route] }
+);
 </script>
 
 <template>
