@@ -11,19 +11,25 @@ const items = computed(() => [
   },
 ]);
 
-const { data: subnavItems } = await useAsyncData("subnav", () => {
-  return queryCollectionNavigation("tools")
-    .where("path", "LIKE", `/${route.path.split("/")[1]}%`)
-    .then((items) =>
-      items[0]?.children?.map((item) => {
-        return {
-          label: item.title,
-          to: item.path,
-          active: route.path.startsWith(item.path),
-        };
-      })
-    );
-});
+const { data: subnavItems } = await useLazyAsyncData(
+  "subnav",
+  () => {
+    return queryCollectionNavigation("tools")
+      .where("path", "LIKE", `/${route.path.split("/")[1]}%`)
+      .then((items) =>
+        items[0]?.children?.map((item) => {
+          console.log(route.path, item.path);
+
+          return {
+            label: item.title,
+            to: item.path,
+            active: route.path.startsWith(item.path),
+          };
+        })
+      );
+  },
+  { watch: [route] }
+);
 </script>
 
 <template>
@@ -66,9 +72,10 @@ const { data: subnavItems } = await useAsyncData("subnav", () => {
     <template #left>
       <p class="text-muted text-sm">
         Copyright © {{ new Date().getFullYear() }} Saurlax. Built on
-        <ULink :to="`https://github.com/saurlax/nuxt-app/commit/${commitHash}`">{{
-          commitHash?.slice(0, 7)
-        }}</ULink>
+        <ULink
+          :to="`https://github.com/saurlax/nuxt-app/commit/${commitHash}`"
+          >{{ commitHash?.slice(0, 7) }}</ULink
+        >
       </p>
     </template>
   </UFooter>
